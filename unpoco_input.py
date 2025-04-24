@@ -1,5 +1,6 @@
 import streamlit as st
 from datetime import date
+import os
 
 st.markdown("# うんぽこスケジューラー \n## シフト入力フォーム💩")
 
@@ -18,10 +19,12 @@ if shift_type == "遅番":
 elif shift_type == "休み":
   event = "休み"
 
-#登録ボタン
+#ファイルパスを明示＆登録ボタン
+
+file_path = os.path.join(os.path.dirname(__file__),"schedule.txt")
 if st.button("この内容で登録✨💩✨"):
   try:
-    with open("schedule.txt","a",encoding="utf-8") as f:
+    with open("file_path","a",encoding="utf-8") as f:
       f.write(f"{selected_date},{event}\n")
     st.success("登録できたよ❣️")
   except Exception as e:
