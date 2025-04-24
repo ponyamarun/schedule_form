@@ -1,7 +1,7 @@
 import streamlit as st
 from datetime import date
 
-st.title("うんぽこスケジューラー・シフト入力フォーム💩")
+st.markdown("# うんぽこスケジューラー \n## シフト入力フォーム💩")
 
 #日付を選ぶ
 selected_date = st.date_input("日付を選んでね❣️",value=date.today())
