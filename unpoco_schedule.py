@@ -2,12 +2,24 @@ from datetime import datetime
 from plyer import notification
 import threading
 import pygame
+import time
+import os
+
+base_dir = os.path.dirname(os.path.abspath(__file__))
 
 #音声を流す関数
 pygame.mixer.init()
 def play_sound(file):
-  pygame.mixer.music.load(file)
-  pygame.mixer.music.play()
+  try:
+    pygame.mixer.music.load(file)
+    pygame.mixer.music.play()
+    print(f"{file}を再生中…")
+    #音が再生中なら待機(1秒ごとに確認)
+    while pygame.mixer.music.get_busy():
+      time.sleep(0.1)
+    print("再生完了！")
+  except Exception as e:
+    print(f"再生エラー: {e}")
 
 
 #ファイル名とデフォルトメッセージ
@@ -33,18 +45,21 @@ try:
 
         #音声ファイルを切り替える
         if "休み" in event:
-          play_sound("yasumi.wav")
+          sound_file = os.path.join(base_dir, "yasumi.wav")
         elif "時出勤" in event:
-          play_sound("osoban.wav")
+          sound_file = os.path.join(base_dir, "osoban.wav")
         elif "" in event:
-          play_sound("oshigoto.wav")
+          sound_file = os.path.join(base_dir, "oshigoto.wav")
         break
 except FileNotFoundError:
   message = "予定ファイルが見つからなかったよ！"
 
+#音声を別スレッドで再生
+threading.Thread(target=play_sound, args=(sound_file,),daemon=True).start()
+
 #通知を表示
 notification.notify(
-  title = "💩｛ぽにゃまるん❣️)",
+  title = "｛ぽにゃまるん❣️)",
   message=message,
   timeout=180
 )

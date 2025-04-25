@@ -20,11 +20,12 @@ elif shift_type == "休み":
   event = "休み"
 
 #ファイルパスを明示＆登録ボタン
-
-file_path = os.path.join(os.path.dirname(__file__),"schedule.txt")
+base_dir = os.path.dirname(os.path.abspath(__file__))
+file_path = os.path.join(base_dir,"schedule.txt")
 if st.button("この内容で登録✨💩✨"):
   try:
-    with open("file_path","a",encoding="utf-8") as f:
+    file_path = "schedule.txt"
+    with open(file_path,"a",encoding="utf-8") as f:
       f.write(f"{selected_date},{event}\n")
     st.success("登録できたよ❣️")
   except Exception as e:
